@@ -1,10 +1,9 @@
-import { Button } from '@/components/ui/button.js';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card.js';
-import { Checkbox } from '@/components/ui/checkbox.js';
-import { Input } from '@/components/ui/input.js';
-import { Label } from '@/components/ui/label.js';
+import { Button } from '@/Components/ui/button.js';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/Components/ui/card.js';
+import { Input } from '@/Components/ui/input.js';
+import { Label } from '@/Components/ui/label.js';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { LogIn } from 'lucide-react';
 
 export default function Login() {

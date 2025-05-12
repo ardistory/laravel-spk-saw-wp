@@ -6,7 +6,7 @@ export default function GuestLayout({ children }) {
             <div className={'font-Inter bg-white shadow-xl absolute top-0 w-full h-24 flex items-center justify-between'}>
                 <div className={'container mx-auto flex items-center justify-between'}>
                     <span className={'text-3xl inline-flex items-center gap-2 font-bold text-yellow-500'}>
-                        <Database />Sistem Pendukung Keputusan Metode SAW WP
+                        <Database size={30} />Sistem Pendukung Keputusan Metode SAW WP
                     </span>
                 </div>
 

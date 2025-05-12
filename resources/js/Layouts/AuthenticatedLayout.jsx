@@ -1,12 +1,13 @@
-import { Button } from '@/components/ui/button.js';
+import { Button } from '@/Components/ui/button.js';
 import Profile from '../../img/default.png';
-
-import { Avatar, AvatarImage } from '@/components/ui/avatar.js';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu.js';
+import { Avatar, AvatarImage } from '@/Components/ui/avatar.js';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/Components/ui/dropdown-menu.js';
 import { router, usePage } from '@inertiajs/react';
-import { Database, Power, UserPen } from 'lucide-react';
-import { Label } from '@/components/ui/label.js';
+import { Box, Boxes, Calculator, ContactRound, Database, FileText, Gauge, Grid2x2Check, Power, TextSearch, UserPen, UsersRound } from 'lucide-react';
+import { Label } from '@/Components/ui/label.js';
 import { cn } from '@/lib/utils.js';
+import { useContext } from 'react';
+import { AuthContext } from '@/Components/AuthProvider.jsx';
 
 const navMenus = [
     {
@@ -14,7 +15,8 @@ const navMenus = [
         menus: [
             {
                 title: 'Dashboard',
-                routeName: 'dashboard'
+                routeName: 'dashboard',
+                icon: <Gauge />,
             },
         ]
     },
@@ -23,27 +25,33 @@ const navMenus = [
         menus: [
             {
                 title: 'Data Kriteria',
-                routeName: 'dashboardf'
+                routeName: 'dashboardf',
+                icon: <Box />,
             },
             {
                 title: 'Data Sub Kriteria',
-                routeName: 'dashboardf'
+                routeName: 'dashboardf',
+                icon: <Boxes />,
             },
             {
                 title: 'Data Alternatif',
-                routeName: 'dashboardf'
+                routeName: 'dashboardf',
+                icon: <FileText />,
             },
             {
                 title: 'Data Penilaian',
-                routeName: 'dashboardf'
+                routeName: 'dashboardf',
+                icon: <TextSearch />,
             },
             {
                 title: 'Data Perhitungan',
-                routeName: 'dashboardf'
+                routeName: 'dashboardf',
+                icon: <Calculator />,
             },
             {
                 title: 'Data Hasil Akhir',
-                routeName: 'dashboardf'
+                routeName: 'dashboardf',
+                icon: <Grid2x2Check />,
             },
         ]
     },
@@ -52,11 +60,13 @@ const navMenus = [
         menus: [
             {
                 title: 'Data User',
-                routeName: 'dashboardf'
+                routeName: 'dashboardf',
+                icon: <UsersRound />,
             },
             {
                 title: 'Data Profile',
-                routeName: 'dashboardf'
+                routeName: 'dashboardf',
+                icon: <ContactRound />,
             },
         ]
     },
@@ -64,6 +74,7 @@ const navMenus = [
 
 export default function AuthenticatedLayout({ children }) {
     const { url } = usePage();
+    const { auth } = useContext(AuthContext);
 
     const isActive = (route) => {
         return url.startsWith(`/${route}`);
@@ -85,8 +96,9 @@ export default function AuthenticatedLayout({ children }) {
                             </Label>
                             {navMenu.menus.map(menu => (
                                 <div key={menu.title}>
-                                    <Button variant={'ghost'} className={cn('w-full', { 'bg-yellow-400': isActive(menu.routeName) })}>
-                                        <span className={'w-full text-start'}>
+                                    <Button variant={'ghost'} className={cn('w-full', { 'bg-white text-black': isActive(menu.routeName) })}>
+                                        <span className={'w-full text-start inline-flex items-center gap-2'}>
+                                            {menu.icon}
                                             {menu.title}
                                         </span>
                                     </Button>
@@ -99,7 +111,7 @@ export default function AuthenticatedLayout({ children }) {
                     <div className={'bg-white shadow-xl top-0 h-24 flex items-center px-10 justify-end'}>
                         <div className={'flex gap-2 items-center'}>
                             <span>
-                                Admin
+                                {auth.name}
                             </span>
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
