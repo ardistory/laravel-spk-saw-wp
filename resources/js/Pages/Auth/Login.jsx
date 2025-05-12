@@ -1,16 +1,17 @@
-import Checkbox from '@/Components/Checkbox';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
+import { Button } from '@/components/ui/button.js';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card.js';
+import { Checkbox } from '@/components/ui/checkbox.js';
+import { Input } from '@/components/ui/input.js';
+import { Label } from '@/components/ui/label.js';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { LogIn } from 'lucide-react';
 
-export default function Login({ status, canResetPassword }) {
+export default function Login() {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
-        remember: false,
+        remember: true,
     });
 
     const submit = (e) => {
@@ -23,78 +24,48 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <GuestLayout>
-            <Head title="Log in" />
+            <Head title="Login" />
 
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
+            <div className={'flex gap-5 justify-between'}>
+                <div className={'text-white w-1/2 space-y-6'}>
+                    <h1 className={'text-4xl font-semibold'}>
+                        Sistem Pendukung Keputusan Metode SAW WP
+                    </h1>
+                    <p className={'text-xl'}>
+                        Metode Simple Additive Weighting (SAW) adalah salah satu Metode Fuzzy Multiple Attribute Decision Making (FMADM) yang mampu menyelesaikan masalah multiple attribute decision making dengan cara membobotkan semua kriteria dan alternatif yang menghasilkan nilai referensi yang tepat.
+                    </p>
+                    <p className={'text-xl'}>
+                        Metode Weighted Product (WP) adalah salah satu metode yang digunakan untuk penyelesaian sistem pengambilan keputusan dengan mempertimbangkan kriteria dan bobot. Metode WP merupakan salah satu dari beberapa metode Multi Atribute Decision Making (MADM) dimana pengambilan keputusan didasarkan pada beberapa atribut.
+                    </p>
                 </div>
-            )}
-
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
-                        onChange={(e) => setData('email', e.target.value)}
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
+                <div className={'w-1/3'}>
+                    <form onSubmit={submit}>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className={'text-3xl font-thin text-center'}>
+                                    Login Account
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div>
+                                    <Input className={'rounded-full p-7'} type={'email'} value={data.email} onChange={(e) => setData('email', e.target.value)} placeholder={'Email'} />
+                                    <Label className={'text-red-500'}>{errors.email}</Label>
+                                </div>
+                                <div className={'mt-5'}>
+                                    <Input className={'rounded-full p-7'} type={'password'} value={data.password} onChange={(e) => setData('password', e.target.value)} placeholder={'Password'} />
+                                    <Label className={'text-red-500'}>{errors.password}</Label>
+                                </div>
+                            </CardContent>
+                            <CardFooter>
+                                <Button className={'bg-yellow-500 hover:bg-yellow-600 w-full rounded-full p-7'} disabled={processing}>
+                                    <LogIn />
+                                    Masuk
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    </form>
                 </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4 block">
-                    <label className="flex items-center">
-                        <Checkbox
-                            name="remember"
-                            checked={data.remember}
-                            onChange={(e) =>
-                                setData('remember', e.target.checked)
-                            }
-                        />
-                        <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
-                            Remember me
-                        </span>
-                    </label>
-                </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    {canResetPassword && (
-                        <Link
-                            href={route('password.request')}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                        >
-                            Forgot your password?
-                        </Link>
-                    )}
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
-                </div>
-            </form>
+            </div>
         </GuestLayout>
     );
 }

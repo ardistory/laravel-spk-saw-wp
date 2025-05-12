@@ -1,18 +1,22 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link } from '@inertiajs/react';
+import { Database } from 'lucide-react';
 
 export default function GuestLayout({ children }) {
     return (
-        <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0 dark:bg-gray-900">
-            <div>
-                <Link href="/">
-                    <ApplicationLogo className="h-20 w-20 fill-current text-gray-500" />
-                </Link>
+        <>
+            <div className={'font-Inter bg-white shadow-xl absolute top-0 w-full h-24 flex items-center justify-between'}>
+                <div className={'container mx-auto flex items-center justify-between'}>
+                    <span className={'text-3xl inline-flex items-center gap-2 font-bold text-yellow-500'}>
+                        <Database />Sistem Pendukung Keputusan Metode SAW WP
+                    </span>
+                </div>
+
             </div>
 
-            <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg dark:bg-gray-800">
-                {children}
+            <div className={'bg-yellow-500 w-full min-h-screen'}>
+                <div className={'container mx-auto absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%]'}>
+                    {children}
+                </div>
             </div>
-        </div>
+        </>
     );
 }
