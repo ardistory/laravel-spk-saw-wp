@@ -33,7 +33,7 @@ export default function UpdateProfileInformation({
     }, [recentlySuccessful]);
 
     return (
-        <Card>
+        <Card className={className}>
             <form onSubmit={submit}>
                 <CardHeader>
                     <CardTitle>

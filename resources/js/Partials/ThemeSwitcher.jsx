@@ -1,5 +1,5 @@
 import { useTheme } from "@/Components/ThemeProvider.js";
-import { Button } from "@/components/ui/button.js";
+import { Button } from "@/Components/ui/button.js";
 import { Moon, Sun } from "lucide-react";
 
 const ThemeSwitcher = () => {

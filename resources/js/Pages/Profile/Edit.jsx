@@ -9,8 +9,8 @@ export default function Edit({ mustVerifyEmail, status }) {
             <Head title="Profile" />
 
             <div className={'flex flex-col gap-5'}>
-                <UpdateProfileInformationForm mustVerifyEmail={mustVerifyEmail} status={status} />
-                <UpdatePasswordForm />
+                <UpdateProfileInformationForm mustVerifyEmail={mustVerifyEmail} status={status} className={'md:w-1/2'} />
+                <UpdatePasswordForm className={'md:w-1/2'} />
             </div>
         </AuthenticatedLayout>
     );

@@ -52,7 +52,7 @@ export default function UpdatePasswordForm({ className = '' }) {
     }, [recentlySuccessful]);
 
     return (
-        <Card>
+        <Card className={className}>
             <CardHeader>
                 <CardTitle>
                     Update Password

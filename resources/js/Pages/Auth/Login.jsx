@@ -25,8 +25,8 @@ export default function Login() {
         <GuestLayout>
             <Head title="Login" />
 
-            <div className={'flex gap-5 justify-between'}>
-                <div className={'text-white w-1/2 space-y-6'}>
+            <div className={'w-full flex flex-col md:flex-row gap-5 justify-between'}>
+                <div className={'text-white md:w-1/2 space-y-6'}>
                     <h1 className={'text-4xl font-semibold'}>
                         Sistem Pendukung Keputusan Metode SAW WP
                     </h1>
@@ -37,7 +37,7 @@ export default function Login() {
                         Metode Weighted Product (WP) adalah salah satu metode yang digunakan untuk penyelesaian sistem pengambilan keputusan dengan mempertimbangkan kriteria dan bobot. Metode WP merupakan salah satu dari beberapa metode Multi Atribute Decision Making (MADM) dimana pengambilan keputusan didasarkan pada beberapa atribut.
                     </p>
                 </div>
-                <div className={'w-1/3'}>
+                <div className={'md:w-1/3'}>
                     <form onSubmit={submit}>
                         <Card>
                             <CardHeader>

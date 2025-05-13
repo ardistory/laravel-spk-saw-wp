@@ -83,10 +83,10 @@ export default function AuthenticatedLayout({ children }) {
     return (
         <div className={'font-Inter'}>
             <div className={'flex'}>
-                <div className={'bg-yellow-500 text-white w-[300px]  left-0 min-h-screen p-2'}>
+                <div className={'bg-yellow-500 text-white w-[300px] left-0 min-h-screen p-2'}>
                     <div className={'h-24 flex items-center justify-center'}>
-                        <div className={'flex items-center text-2xl font-bold gap-2 cursor-pointer'} onClick={() => router.visit(route('dashboard'))}>
-                            <Database size={40} />SPK SAW WP
+                        <div className={'flex items-center md:text-2xl font-bold gap-2 cursor-pointer'} onClick={() => router.visit(route('dashboard'))}>
+                            <Database size={30} />SPK SAW WP
                         </div>
                     </div>
                     {navMenus.map(navMenu => (
