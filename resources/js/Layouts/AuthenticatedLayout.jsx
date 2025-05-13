@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils.js';
 import { useContext, useState } from 'react';
 import { AuthContext } from '@/Components/AuthProvider.jsx';
 import { Separator } from '@/Components/ui/separator.js';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/ui/tooltip.js';
 
 const navMenus = [
     {
@@ -98,12 +99,23 @@ export default function AuthenticatedLayout({ children }) {
                             <Separator className={'block md:hidden'} />
                             {navMenu.menus.map(menu => (
                                 <div key={menu.title} className={'mt-2'}>
-                                    <Button variant={'ghost'} className={cn('w-full', { 'bg-white text-black': isActive(menu.routeName) })}>
-                                        <span className={'md:w-full text-start inline-flex items-center gap-2'}>
-                                            {menu.icon}
-                                            <span className={'hidden md:block'}>{menu.title}</span>
-                                        </span>
-                                    </Button>
+                                    <TooltipProvider>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild className={'w-full'}>
+                                                <Button variant={'ghost'} className={cn('w-full', { 'bg-white text-black': isActive(menu.routeName) })}>
+                                                    <span className={'md:w-full text-start inline-flex items-center gap-2'}>
+                                                        {menu.icon}
+                                                        <span className={'hidden md:block'}>{menu.title}</span>
+                                                    </span>
+                                                </Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                                <p>
+                                                    {menu.title}
+                                                </p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </TooltipProvider>
                                 </div>
                             ))}
                         </div>
