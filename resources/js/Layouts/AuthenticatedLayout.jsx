@@ -6,8 +6,9 @@ import { router, usePage } from '@inertiajs/react';
 import { Box, Boxes, Calculator, ContactRound, Database, FileText, Gauge, Grid2x2Check, Power, TextSearch, UserPen, UsersRound } from 'lucide-react';
 import { Label } from '@/Components/ui/label.js';
 import { cn } from '@/lib/utils.js';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '@/Components/AuthProvider.jsx';
+import { Separator } from '@/Components/ui/separator.js';
 
 const navMenus = [
     {
@@ -83,23 +84,24 @@ export default function AuthenticatedLayout({ children }) {
     return (
         <div className={'font-Inter'}>
             <div className={'flex'}>
-                <div className={'bg-yellow-500 text-white w-[300px] left-0 min-h-screen p-2'}>
+                <div className={'bg-yellow-500 text-white w-[50px] md:w-[300px] left-0 min-h-screen px-2'}>
                     <div className={'h-24 flex items-center justify-center'}>
                         <div className={'flex items-center md:text-2xl font-bold gap-2 cursor-pointer'} onClick={() => router.visit(route('dashboard'))}>
-                            <Database size={30} />SPK SAW WP
+                            <Database size={30} /><span className={'hidden md:block'}>SPK SAW WP</span>
                         </div>
                     </div>
                     {navMenus.map(navMenu => (
-                        <div key={navMenu.label} className={'mb-5'}>
-                            <Label className={'font-bold'}>
+                        <div key={navMenu.label} className={'mb-2 md:mb-5'}>
+                            <Label className={'hidden md:block font-bold'}>
                                 {navMenu.label}
                             </Label>
+                            <Separator className={'block md:hidden'} />
                             {navMenu.menus.map(menu => (
-                                <div key={menu.title}>
+                                <div key={menu.title} className={'mt-2'}>
                                     <Button variant={'ghost'} className={cn('w-full', { 'bg-white text-black': isActive(menu.routeName) })}>
-                                        <span className={'w-full text-start inline-flex items-center gap-2'}>
+                                        <span className={'md:w-full text-start inline-flex items-center gap-2'}>
                                             {menu.icon}
-                                            {menu.title}
+                                            <span className={'hidden md:block'}>{menu.title}</span>
                                         </span>
                                     </Button>
                                 </div>
