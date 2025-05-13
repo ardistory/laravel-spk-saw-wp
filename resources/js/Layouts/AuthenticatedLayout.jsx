@@ -27,32 +27,32 @@ export const navMenus = [
         menus: [
             {
                 title: 'Data Kriteria',
-                routeName: 'dashboardf',
+                routeName: 'data-kriteria',
                 icon: <Box />,
             },
             {
                 title: 'Data Sub Kriteria',
-                routeName: 'dashboardf',
+                routeName: 'data-sub-kriteria',
                 icon: <Boxes />,
             },
             {
                 title: 'Data Alternatif',
-                routeName: 'dashboardf',
+                routeName: 'data-alternatif',
                 icon: <FileText />,
             },
             {
                 title: 'Data Penilaian',
-                routeName: 'dashboardf',
+                routeName: 'data-penilaian',
                 icon: <TextSearch />,
             },
             {
                 title: 'Data Perhitungan',
-                routeName: 'dashboardf',
+                routeName: 'data-perhitungan',
                 icon: <Calculator />,
             },
             {
                 title: 'Data Hasil Akhir',
-                routeName: 'dashboardf',
+                routeName: 'data-hasil-akhir',
                 icon: <Grid2x2Check />,
             },
         ]
@@ -62,12 +62,12 @@ export const navMenus = [
         menus: [
             {
                 title: 'Data User',
-                routeName: 'dashboardf',
+                routeName: 'data-user',
                 icon: <UsersRound />,
             },
             {
                 title: 'Data Profile',
-                routeName: 'dashboardf',
+                routeName: 'profile-edit',
                 icon: <ContactRound />,
             },
         ]
@@ -77,7 +77,7 @@ export const navMenus = [
 export default function AuthenticatedLayout({ children }) {
     const { url } = usePage();
     const { auth } = useContext(AuthContext);
-
+    console.log(url);
     const isActive = (route) => {
         return url.startsWith(`/${route}`);
     };
@@ -102,7 +102,7 @@ export default function AuthenticatedLayout({ children }) {
                                     <TooltipProvider>
                                         <Tooltip>
                                             <TooltipTrigger asChild className={'w-full'}>
-                                                <Button variant={'ghost'} className={cn('w-full', { 'bg-white text-black': isActive(menu.routeName) })}>
+                                                <Button variant={'ghost'} className={cn('w-full', { 'bg-white text-black': isActive(menu.routeName) })} onClick={() => router.visit(route(menu.routeName))}>
                                                     <span className={'md:w-full text-start inline-flex items-center gap-2'}>
                                                         {menu.icon}
                                                         <span className={'hidden md:block'}>{menu.title}</span>
@@ -134,7 +134,7 @@ export default function AuthenticatedLayout({ children }) {
                                     </Avatar>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
-                                    <DropdownMenuItem onClick={() => router.visit(route('profile.edit'))}>
+                                    <DropdownMenuItem onClick={() => router.visit(route('profile-edit'))}>
                                         <UserPen />
                                         Profile
                                     </DropdownMenuItem>

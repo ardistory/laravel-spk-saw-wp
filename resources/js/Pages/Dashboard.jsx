@@ -2,7 +2,7 @@ import { AuthContext } from '@/Components/AuthProvider.jsx';
 import { Alert, AlertDescription } from '@/Components/ui/alert.js';
 import { Button } from '@/Components/ui/button.js';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { Gauge } from 'lucide-react';
 import { useContext, useEffect } from 'react';
 import { navMenus } from '@/Layouts/AuthenticatedLayout';
@@ -42,9 +42,11 @@ export default function Dashboard({ auth }) {
                 </Alert>
                 <div className={'grid grid-cols-1 md:grid-cols-3 gap-5'}>
                     {navMenus[1].menus.map(menu => (
-                        <Button key={menu.title} variant={'ghost'} className={`px-12 py-10 shadow-xl border border-l-[4px] ${randomColor()}`}>
-                            {menu.title}
-                            {menu.icon}
+                        <Button key={menu.title} variant={'ghost'} className={`px-12 py-10 shadow-xl border border-l-[4px] ${randomColor()}`} onClick={() => router.visit(route(menu.routeName))}>
+                            <span className={'inline-flex items-center w-full justify-between'}>
+                                {menu.title}
+                                {menu.icon}
+                            </span>
                         </Button>
                     ))}
                 </div>
