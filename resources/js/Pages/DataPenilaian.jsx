@@ -2,9 +2,9 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import { Head } from "@inertiajs/react";
 import { TextSearch } from "lucide-react";
 
-const DataPenilaian = () => {
+const DataPenilaian = ({ auth }) => {
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout user={auth.user}>
             <Head title="Data Penilaian" />
 
             <div className={'space-y-5'}>

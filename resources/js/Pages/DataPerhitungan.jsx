@@ -2,9 +2,9 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import { Head } from "@inertiajs/react";
 import { Calculator } from "lucide-react";
 
-const DataPerhitungan = () => {
+const DataPerhitungan = ({ auth }) => {
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout user={auth.user}>
             <Head title="Data Perhitungan" />
 
             <div className={'space-y-5'}>

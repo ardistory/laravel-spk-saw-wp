@@ -6,8 +6,6 @@ import { router, usePage } from '@inertiajs/react';
 import { Box, Boxes, Calculator, ContactRound, Database, FileText, Gauge, Grid2x2Check, Power, TextSearch, UserPen, UsersRound } from 'lucide-react';
 import { Label } from '@/Components/ui/label.js';
 import { cn } from '@/lib/utils.js';
-import { useContext, useState } from 'react';
-import { AuthContext } from '@/Components/AuthProvider.jsx';
 import { Separator } from '@/Components/ui/separator.js';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/ui/tooltip.js';
 
@@ -74,10 +72,9 @@ export const navMenus = [
     },
 ];
 
-export default function AuthenticatedLayout({ children }) {
+export default function AuthenticatedLayout({ user, children }) {
     const { url } = usePage();
-    const { auth } = useContext(AuthContext);
-    console.log(url);
+
     const isActive = (route) => {
         return url.startsWith(`/${route}`);
     };
@@ -125,7 +122,7 @@ export default function AuthenticatedLayout({ children }) {
                     <div className={'bg-white shadow-xl top-0 h-24 flex items-center px-10 justify-end'}>
                         <div className={'flex gap-2 items-center'}>
                             <span>
-                                {auth.name}
+                                {user.name}
                             </span>
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>

@@ -1,19 +1,11 @@
-import { AuthContext } from '@/Components/AuthProvider.jsx';
 import { Alert, AlertDescription } from '@/Components/ui/alert.js';
 import { Button } from '@/Components/ui/button.js';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
 import { Gauge } from 'lucide-react';
-import { useContext, useEffect } from 'react';
 import { navMenus } from '@/Layouts/AuthenticatedLayout';
 
 export default function Dashboard({ auth }) {
-    const { setAuth } = useContext(AuthContext);
-
-    useEffect(() => {
-        setAuth(auth.user);
-    }, []);
-
     const colors = [
         'border-l-red-500',
         'border-l-blue-500',
@@ -27,7 +19,7 @@ export default function Dashboard({ auth }) {
     };
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout user={auth.user}>
             <Head title="Dashboard" />
 
             <div className={'space-y-5'}>

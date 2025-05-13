@@ -2,9 +2,9 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import { Head } from "@inertiajs/react";
 import { Box } from "lucide-react";
 
-const DataKriteria = () => {
+const DataKriteria = ({ auth }) => {
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout user={auth.user}>
             <Head title="Data Kriteria" />
 
             <div className={'space-y-5'}>

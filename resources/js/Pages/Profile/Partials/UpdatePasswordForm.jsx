@@ -58,8 +58,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                     Update Password
                 </CardTitle>
                 <CardDescription>
-                    Ensure your account is using a long, random password to stay
-                    secure.
+                    Pastikan akun Anda menggunakan kata sandi yang panjang dan acak agar tetap aman.
                 </CardDescription>
             </CardHeader>
             <form onSubmit={updatePassword}>

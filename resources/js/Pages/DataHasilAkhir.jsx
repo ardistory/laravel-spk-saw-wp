@@ -2,9 +2,9 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import { Head } from "@inertiajs/react";
 import { Grid2x2Check } from "lucide-react";
 
-const DataHasilAkhir = () => {
+const DataHasilAkhir = ({ auth }) => {
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout user={auth.user}>
             <Head title=" Data HasilAkhir" />
 
             <div className={'space-y-5'}>

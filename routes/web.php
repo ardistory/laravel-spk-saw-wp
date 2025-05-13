@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,7 +40,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('data-hasil-akhir');
 
     Route::get('/data-user', function () {
-        return Inertia::render('DataUser');
+        $users = User::all(['name', 'email', 'created_at', 'updated_at']);
+
+        return Inertia::render('DataUser', ['users' => $users]);
     })->name('data-user');
 });
 

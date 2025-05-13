@@ -13,13 +13,13 @@ export default function Register() {
         password_confirmation: '',
     });
 
-    const submit = (e) => {
-        e.preventDefault();
+    // const submit = (e) => {
+    //     e.preventDefault();
 
-        post(route('register'), {
-            onFinish: () => reset('password', 'password_confirmation'),
-        });
-    };
+    //     post(route('register'), {
+    //         onFinish: () => reset('password', 'password_confirmation'),
+    //     });
+    // };
 
     return (
         <GuestLayout>

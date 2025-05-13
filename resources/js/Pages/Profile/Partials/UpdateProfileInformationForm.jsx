@@ -40,7 +40,7 @@ export default function UpdateProfileInformation({
                         Profile Information
                     </CardTitle>
                     <CardDescription>
-                        Update your account's profile information and email address.
+                        Perbarui informasi profil akun dan alamat email Anda.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className={'space-y-2'}>
