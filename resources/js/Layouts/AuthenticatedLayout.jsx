@@ -11,7 +11,7 @@ import { AuthContext } from '@/Components/AuthProvider.jsx';
 import { Separator } from '@/Components/ui/separator.js';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/ui/tooltip.js';
 
-const navMenus = [
+export const navMenus = [
     {
         label: 'Menu',
         menus: [
