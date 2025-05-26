@@ -9,7 +9,7 @@ import { Calculator } from "lucide-react";
 import { useContext, useState } from "react";
 
 const DataPerhitungan = ({ auth }) => {
-    const { calculation, calculateSAW, data } = useContext(SawWpContext);
+    const { calculation, calculateSAW, calculateWP, data } = useContext(SawWpContext);
     const [method, setMethod] = useState('');
 
     return (
@@ -31,7 +31,7 @@ const DataPerhitungan = ({ auth }) => {
                             <SelectItem value={'wp'}>Metode WP</SelectItem>
                         </SelectContent>
                     </Select>
-                    <Button onClick={() => (method === 'saw') ? calculateSAW() : (method === 'wp') ? null : null}>
+                    <Button onClick={() => (method === 'saw') ? calculateSAW() : (method === 'wp') ? calculateWP() : null}>
                         <Calculator />
                         Hitung
                     </Button>
@@ -102,11 +102,11 @@ const DataPerhitungan = ({ auth }) => {
                         </Card>
                     </Card>
                 )}
-                {calculation.SAW && (
+                {calculation.WP && (
                     <Card>
                         <CardHeader>
                             <CardTitle>
-                                Perhitungan SAW
+                                Perhitungan WP
                             </CardTitle>
                         </CardHeader>
                         <Card>
@@ -118,7 +118,7 @@ const DataPerhitungan = ({ auth }) => {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {calculation.SAW && calculation.SAW
+                                    {calculation.WP && calculation.WP
                                         .sort((a, b) => b.score - a.score)
                                         .map(result => (
                                             <TableRow key={result.alternatif_id}>

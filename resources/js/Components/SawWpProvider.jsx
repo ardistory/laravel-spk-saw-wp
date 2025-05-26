@@ -8,6 +8,7 @@ export default function SawWpProvider({ children }) {
 
     const { data, setData } = useForm({
         criterias: [],
+        subCriterias: [],
         alternatifs: [],
         scores: [],
         normalized: [],
@@ -17,6 +18,9 @@ export default function SawWpProvider({ children }) {
     const addCriteria = (criteria) => setData('criterias', [...data.criterias, criteria]);
     const addAlternatif = (alternatif) => setData('alternatifs', [...data.alternatifs, alternatif]);
     const addScore = (score) => setData('scores', [...data.scores, score]);
+
+    const addSubCriteria = (subCriteria) => setData('subCriterias', [...data.subCriterias, subCriteria]);
+    const deleteSubCriteria = (subCriteriaId) => setData('subCriterias', data.subCriterias.filter(item => item.id !== subCriteriaId));
 
     const deleteCriteria = (criteriaId) => setData('criterias', data.criterias.filter(item => item.id != criteriaId));
     const deleteAlternatif = (alternatifId) => setData('alternatifs', data.alternatifs.filter(item => item.id != alternatifId));
@@ -71,6 +75,39 @@ export default function SawWpProvider({ children }) {
         setCalculation(prev => ({ ...prev, SAW: result }));
     };
 
+    const calculateWP = () => {
+        const weighted = data.weighted.map(score => {
+            const criteria = data.criterias.find(c => c.id === score.criteria_id);
+            return {
+                ...score,
+                wp: Math.pow(score.normalized, criteria.weight)
+            };
+        });
+
+        const alternatives = {};
+
+        weighted.forEach(score => {
+            if (!alternatives[score.alternatif_id]) {
+                alternatives[score.alternatif_id] = 1;
+            }
+            alternatives[score.alternatif_id] *= score.wp;
+        });
+
+        const result = Object.keys(alternatives).map(alternatif_id => ({
+            alternatif_id: parseInt(alternatif_id),
+            score: alternatives[alternatif_id]
+        }));
+
+        const totalScore = result.reduce((acc, curr) => acc + curr.score, 0);
+
+        const normalizedResult = result.map(score => ({
+            alternatif_id: score.alternatif_id,
+            score: score.score / totalScore
+        }));
+
+        setCalculation(prev => ({ ...prev, WP: normalizedResult }));
+    };
+
     return (
         <SawWpContext.Provider value={{
             data,
@@ -78,8 +115,11 @@ export default function SawWpProvider({ children }) {
             deleteCriteria,
             addAlternatif,
             deleteAlternatif,
+            addSubCriteria,
+            deleteSubCriteria,
             addScore,
             calculateSAW,
+            calculateWP,
             calculation,
         }}>
             {children}
