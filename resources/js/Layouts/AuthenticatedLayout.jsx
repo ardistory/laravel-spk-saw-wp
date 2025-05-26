@@ -34,7 +34,7 @@ export const navMenus = [
                 icon: <Boxes />,
             },
             {
-                title: 'Data Alternatif',
+                title: 'Data Karyawan',
                 routeName: 'data-alternatif',
                 icon: <FileText />,
             },
@@ -52,21 +52,6 @@ export const navMenus = [
                 title: 'Data Hasil Akhir',
                 routeName: 'data-hasil-akhir',
                 icon: <Grid2x2Check />,
-            },
-        ]
-    },
-    {
-        label: 'Master User',
-        menus: [
-            {
-                title: 'Data User',
-                routeName: 'data-user',
-                icon: <UsersRound />,
-            },
-            {
-                title: 'Data Profile',
-                routeName: 'profile-edit',
-                icon: <ContactRound />,
             },
         ]
     },
