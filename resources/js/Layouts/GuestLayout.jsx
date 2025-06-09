@@ -1,4 +1,5 @@
 import { Database } from 'lucide-react';
+import Bg from '@/../img/bg.jpg';
 
 export default function GuestLayout({ children }) {
     return (
@@ -9,10 +10,18 @@ export default function GuestLayout({ children }) {
                         <Database size={30} />Sistem Pendukung Keputusan Metode SAW WP
                     </span>
                 </div>
-
             </div>
 
-            <div className={'bg-yellow-500 w-full min-h-screen flex items-center justify-center'}>
+            <div
+                className={'w-full min-h-screen flex items-center justify-center'}
+                style={{
+                    backgroundImage: `url(${Bg})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundAttachment: 'fixed'
+                }}
+            >
                 <div className={'container mx-auto px-10 md:px-0'}>
                     {children}
                 </div>
