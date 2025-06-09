@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Criterias;
+use App\Models\ResultCount;
 use App\Models\User;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,7 +19,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('/data-kriteria', function () {
-        return Inertia::render('DataKriteria');
+        $criterias = Criterias::query()->get();
+
+        return Inertia::render('DataKriteria', [
+            'criteriasFromDb' => $criterias,
+        ]);
+    })->name('data-kriteria');
+
+    Route::post('/data-kriteria', function (Request $request) {
+        $request->validate([
+            'nameCriteriasForDb' => 'string',
+            'criteriasForDb' => 'json'
+        ]);
+
+        Criterias::query()->create([
+            'nama_kriteria' => $request['nameCriteriasForDb'],
+            'criterias' => $request['criteriasForDb'],
+        ]);
     })->name('data-kriteria');
 
     Route::get('/data-sub-kriteria', function () {
@@ -32,7 +51,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('data-penilaian');
 
     Route::get('/data-perhitungan', function () {
-        return Inertia::render('DataPerhitungan');
+        $hasilHitungFromDb = ResultCount::query()->get();
+
+        return Inertia::render('DataPerhitungan', [
+            'hasilHitungFromDb' => $hasilHitungFromDb
+        ]);
+    })->name('data-perhitungan');
+
+    Route::post('/data-perhitungan', function (Request $request) {
+        $request->validate([
+            'nama_hasil_hitung' => 'string',
+            'data' => 'json',
+            'calculation' => 'json',
+        ]);
+
+        ResultCount::query()->create([
+            'nama_hasil_hitung' => $request['nama_hasil_hitung'],
+            'data' => $request['data'],
+            'calculation' => $request['calculation'],
+        ]);
     })->name('data-perhitungan');
 
     Route::get('/data-hasil-akhir', function () {

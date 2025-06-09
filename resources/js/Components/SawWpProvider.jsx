@@ -1,12 +1,15 @@
-import { useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { createContext, useState } from 'react';
+import { toast } from 'sonner';
 
 export const SawWpContext = createContext();
 
 export default function SawWpProvider({ children }) {
     const [calculation, setCalculation] = useState({ SAW: null, WP: null });
+    const [nameCriteria, setNameCriteria] = useState('');
+    const [nameHasilHitung, setNameHasilHitung] = useState('');
 
-    const { data, setData } = useForm({
+    const { data, setData, post } = useForm({
         criterias: [],
         subCriterias: [],
         alternatifs: [],
@@ -24,6 +27,61 @@ export default function SawWpProvider({ children }) {
 
     const deleteCriteria = (criteriaId) => setData('criterias', data.criterias.filter(item => item.id != criteriaId));
     const deleteAlternatif = (alternatifId) => setData('alternatifs', data.alternatifs.filter(item => item.id != alternatifId));
+
+    const setCriteriaToProvider = (criteria) => {
+        setData('criterias', JSON.parse(criteria.criterias));
+
+        toast('Success', { description: `menggunakan kriteria ${criteria.nama_kriteria}` });
+    };
+
+    const setHasilHitungToProvider = (hasilHitung) => {
+        setData(JSON.parse(hasilHitung.data));
+        setCalculation(JSON.parse(hasilHitung.calculation));
+
+        toast('Success', { description: `membuka kembali hasil hitung ${hasilHitung.nama_hasil_hitung}` });
+    };
+
+    const setNameCriteriaToDb = (nameCriteria) => {
+        setNameCriteria(nameCriteria);
+    };
+
+    const setNameHasilHitungToDb = (nameHasilHitung) => {
+        setNameHasilHitung(nameHasilHitung);
+    };
+
+    const saveCriteriasToDb = (e) => {
+        e.preventDefault();
+
+        const criteriasForDb = [...data.criterias];
+
+        post(route('data-kriteria', { nameCriteriasForDb: nameCriteria, criteriasForDb: JSON.stringify(criteriasForDb) }), {
+            onSuccess: () => {
+                toast('Sucess', { description: 'data kriteria tersimpan.' });
+            },
+            onError: (errors) => {
+                Object.keys(errors).forEach((key) => {
+                    toast.error('Failed', {
+                        description: errors[key]
+                    });
+                });
+            }
+        });
+    };
+
+    const saveHasilHitungToDb = (e, calculationFromFe) => {
+        e.preventDefault();
+
+        router.post(route('data-perhitungan', { nama_hasil_hitung: nameHasilHitung, data: JSON.stringify(data), calculation: JSON.stringify(calculationFromFe) }), null, {
+            onSuccess: () => toast('Sucess', { description: 'data perhitungan tersimpan.' }),
+            onError: (errors) => {
+                Object.keys(errors).forEach((key) => {
+                    toast.error('Failed', {
+                        description: errors[key]
+                    });
+                });
+            }
+        });
+    };
 
     const normalizeMatrix = (scores) => {
         const normalized = scores.map(score => {
@@ -121,6 +179,12 @@ export default function SawWpProvider({ children }) {
             calculateSAW,
             calculateWP,
             calculation,
+            setNameCriteriaToDb,
+            saveCriteriasToDb,
+            setCriteriaToProvider,
+            saveHasilHitungToDb,
+            setNameHasilHitungToDb,
+            setHasilHitungToProvider,
         }}>
             {children}
         </SawWpContext.Provider>
