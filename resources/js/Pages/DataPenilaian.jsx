@@ -6,7 +6,7 @@ import { Input } from "@/Components/ui/input.js";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select.js";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/Components/ui/table.js";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { Plus, TextSearch, Trash2 } from "lucide-react";
 import { useContext, useState } from "react";
 
@@ -27,6 +27,7 @@ const DataPenilaian = ({ auth }) => {
         e.target.reset();
         setAlternatifId('');
         setCriteriaId('');
+        router.visit(route('data-penilaian'));
     };
 
     const getScore = (alternatif_id, criteria_id) => {

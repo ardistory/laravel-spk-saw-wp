@@ -92,7 +92,7 @@ export default function SawWpProvider({ children }) {
 
             return {
                 ...score,
-                normalized: criteria.type === 'benefit' ? score.value / max : 1 - (score.value / max)
+                normalized: criteria.type == 'benefit' ? score.value / max : 1 - (score.value / max)
             };
         });
 
