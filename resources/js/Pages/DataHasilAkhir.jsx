@@ -40,7 +40,7 @@ const DataHasilAkhir = ({ auth }) => {
                                         .sort((a, b) => b.score - a.score)
                                         .map(result => (
                                             <TableRow key={result.alternatif_id}>
-                                                <TableCell>{data.alternatifs.find(a => a.id === result.alternatif_id).name}</TableCell>
+                                                <TableCell>{data.alternatifs.find(a => a.id === result.alternatif_id)?.name ?? <Badge>Data berubah, silahkan hitung ulang</Badge>}</TableCell>
                                                 <TableCell>{result.score}</TableCell>
                                             </TableRow>
                                         ))}
@@ -69,7 +69,7 @@ const DataHasilAkhir = ({ auth }) => {
                                         .sort((a, b) => b.score - a.score)
                                         .map(result => (
                                             <TableRow key={result.alternatif_id}>
-                                                <TableCell>{data.alternatifs.find(a => a.id === result.alternatif_id).name}</TableCell>
+                                                <TableCell>{data.alternatifs.find(a => a.id === result.alternatif_id)?.name ?? <Badge>Data berubah, silahkan hitung ulang</Badge>}</TableCell>
                                                 <TableCell>{result.score}</TableCell>
                                             </TableRow>
                                         ))}
