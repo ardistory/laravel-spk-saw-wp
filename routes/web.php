@@ -34,10 +34,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'criteriasForDb' => 'json'
         ]);
 
-        Criterias::query()->create([
-            'nama_kriteria' => $request['nameCriteriasForDb'],
-            'criterias' => $request['criteriasForDb'],
-        ]);
+        Criterias::query()->updateOrCreate(
+            [
+                'nama_kriteria' => 'criteria_default',
+            ],
+            [
+                'nama_kriteria' => $request['nameCriteriasForDb'],
+                'criterias' => $request['criteriasForDb'],
+            ]
+        );
     })->name('data-kriteria');
 
     Route::get('/data-sub-kriteria', function () {
@@ -54,10 +59,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'subCriteriasForDb' => 'json',
         ]);
 
-        SubCriterias::query()->create([
-            'nama_sub_kriteria' => $request['nameSubCriteriasForDb'],
-            'sub_criterias' => $request['subCriteriasForDb'],
-        ]);
+        SubCriterias::query()->updateOrCreate(
+            [
+                'nama_sub_kriteria' => 'sub_criteria_default',
+            ],
+            [
+                'nama_sub_kriteria' => $request['nameSubCriteriasForDb'],
+                'sub_criterias' => $request['subCriteriasForDb'],
+            ]
+        );
     })->name('data-sub-kriteria');
 
     Route::get('/data-alternatif', function () {
@@ -74,10 +84,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'alternatifsForDb' => 'json',
         ]);
 
-        Alternatifs::query()->create([
-            'nama_alternatifs' => $request['nameAlternatifsForDb'],
-            'alternatifs' => $request['alternatifsForDb'],
-        ]);
+        Alternatifs::query()->updateOrCreate(
+            [
+                'nama_alternatifs' => 'alternatif_default',
+            ],
+            [
+                'nama_alternatifs' => $request['nameAlternatifsForDb'],
+                'alternatifs' => $request['alternatifsForDb'],
+            ]
+        );
     })->name('data-alternatif');
 
     Route::get('/data-penilaian', function () {
@@ -85,14 +100,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('data-penilaian');
 
     Route::get('/data-perhitungan', function () {
-        $hasilHitungFromDb = ResultCount::query()->get();
-
-        return Inertia::render('DataPerhitungan', [
-            'hasilHitungFromDb' => $hasilHitungFromDb
-        ]);
+        return Inertia::render('DataPerhitungan');
     })->name('data-perhitungan');
 
-    Route::post('/data-perhitungan', function (Request $request) {
+    Route::get('/data-hasil-akhir', function () {
+        $hasilHitungFromDb = ResultCount::query()->get();
+
+        return Inertia::render('DataHasilAkhir', [
+            'hasilHitungFromDb' => $hasilHitungFromDb
+        ]);
+    })->name('data-hasil-akhir');
+
+    Route::post('/data-hasil-akhir', function (Request $request) {
         $request->validate([
             'nama_hasil_hitung' => 'string',
             'data' => 'json',
@@ -104,10 +123,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'data' => $request['data'],
             'calculation' => $request['calculation'],
         ]);
-    })->name('data-perhitungan');
-
-    Route::get('/data-hasil-akhir', function () {
-        return Inertia::render('DataHasilAkhir');
     })->name('data-hasil-akhir');
 
     Route::get('/data-user', function () {

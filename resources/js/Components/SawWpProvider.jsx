@@ -6,9 +6,6 @@ export const SawWpContext = createContext();
 
 export default function SawWpProvider({ children }) {
     const [calculation, setCalculation] = useState({ SAW: null, WP: null });
-    const [nameCriteria, setNameCriteria] = useState('');
-    const [nameSubCriteria, setNameSubCriteria] = useState('');
-    const [nameAlternatif, setNameAlternatif] = useState('');
     const [nameHasilHitung, setNameHasilHitung] = useState('');
 
     const { data, setData, post } = useForm({
@@ -20,15 +17,16 @@ export default function SawWpProvider({ children }) {
         weighted: [],
     });
 
+    // KRITERIA
     const addCriteria = (criteria) => setData('criterias', [...data.criterias, criteria]);
-    const addAlternatif = (alternatif) => setData('alternatifs', [...data.alternatifs, alternatif]);
-    const addScore = (score) => setData('scores', [...data.scores, score]);
 
-    const addSubCriteria = (subCriteria) => setData('subCriterias', [...data.subCriterias, subCriteria]);
-    const deleteSubCriteria = (subCriteriaId) => setData('subCriterias', data.subCriterias.filter(item => item.id !== subCriteriaId));
+    const updateCriteria = (id, field, value) => {
+        setData('criterias', data.criterias.map(criteria =>
+            criteria.id === id ? { ...criteria, [field]: value } : criteria
+        ));
+    };
 
     const deleteCriteria = (criteriaId) => setData('criterias', data.criterias.filter(item => item.id != criteriaId));
-    const deleteAlternatif = (alternatifId) => setData('alternatifs', data.alternatifs.filter(item => item.id != alternatifId));
 
     const setCriteriaToProvider = (criteria) => {
         setData('criterias', JSON.parse(criteria.criterias));
@@ -36,46 +34,10 @@ export default function SawWpProvider({ children }) {
         toast('Success', { description: `menggunakan kriteria ${criteria.nama_kriteria}` });
     };
 
-    const setSubCriteriaToProvider = (subCriteria) => {
-        setData('subCriterias', JSON.parse(subCriteria.sub_criterias));
-
-        toast('Success', { description: `menggunakan sub kriteria ${subCriteria.nama_sub_kriteria}` });
-    };
-
-    const setAlternatifToProvider = (alternatif) => {
-        setData('alternatifs', JSON.parse(alternatif.alternatifs));
-
-        toast('Success', { description: `menggunakan data karyawan ${alternatif.nama_alternatifs}` });
-    };
-
-    const setHasilHitungToProvider = (hasilHitung) => {
-        setData(JSON.parse(hasilHitung.data));
-        setCalculation(JSON.parse(hasilHitung.calculation));
-
-        toast('Success', { description: `membuka kembali hasil hitung ${hasilHitung.nama_hasil_hitung}` });
-    };
-
-    const setNameCriteriaToDb = (nameCriteria) => {
-        setNameCriteria(nameCriteria);
-    };
-
-    const setNameSubCriteriaToDb = (nameSubCriteria) => {
-        setNameSubCriteria(nameSubCriteria);
-    };
-    const setNameAlternatifToDb = (nameAlternatif) => {
-        setNameAlternatif(nameAlternatif);
-    };
-
-    const setNameHasilHitungToDb = (nameHasilHitung) => {
-        setNameHasilHitung(nameHasilHitung);
-    };
-
     const saveCriteriasToDb = (e) => {
         e.preventDefault();
 
-        const criteriasForDb = [...data.criterias];
-
-        post(route('data-kriteria', { nameCriteriasForDb: nameCriteria, criteriasForDb: JSON.stringify(criteriasForDb) }), {
+        post(route('data-kriteria', { nameCriteriasForDb: 'criteria_default', criteriasForDb: JSON.stringify(data.criterias) }), {
             onSuccess: () => {
                 toast('Sucess', { description: 'data kriteria tersimpan.' });
             },
@@ -89,12 +51,27 @@ export default function SawWpProvider({ children }) {
         });
     };
 
+    // SUB KRITERIA
+    const addSubCriteria = (subCriteria) => setData('subCriterias', [...data.subCriterias, subCriteria]);
+
+    const updateSubCriteria = (id, field, value) => {
+        setData('subCriterias', data.subCriterias.map(subCiteria =>
+            subCiteria.id === id ? { ...subCiteria, [field]: value } : subCiteria
+        ));
+    };
+
+    const deleteSubCriteria = (subCriteriaId) => setData('subCriterias', data.subCriterias.filter(item => item.id !== subCriteriaId));
+
+    const setSubCriteriaToProvider = (subCriteria) => {
+        setData('subCriterias', JSON.parse(subCriteria.sub_criterias));
+
+        toast('Success', { description: `menggunakan sub kriteria ${subCriteria.nama_sub_kriteria}` });
+    };
+
     const saveSubCriteriasToDb = (e) => {
         e.preventDefault();
 
-        const subCriteriasForDb = [...data.subCriterias];
-
-        post(route('data-sub-kriteria', { nameSubCriteriasForDb: nameSubCriteria, subCriteriasForDb: JSON.stringify(subCriteriasForDb) }), {
+        post(route('data-sub-kriteria', { nameSubCriteriasForDb: 'sub_criteria_default', subCriteriasForDb: JSON.stringify(data.subCriterias) }), {
             onSuccess: () => {
                 toast('Sucess', { description: 'data sub kriteria tersimpan.' });
             },
@@ -108,12 +85,29 @@ export default function SawWpProvider({ children }) {
         });
     };
 
+    // ALTERNATIF
+    const addAlternatif = (alternatif) => setData('alternatifs', [...data.alternatifs, alternatif]);
+
+    const updateAlternatif = (id, field, value) => {
+        setData('alternatifs', data.alternatifs.map(alterantif =>
+            alterantif.id === id ? { ...alterantif, [field]: value } : alterantif
+        ));
+    };
+
+    const deleteAlternatif = (alternatifId) => setData('alternatifs', data.alternatifs.filter(item => item.id != alternatifId));
+
+    const setAlternatifToProvider = (alternatif) => {
+        setData('alternatifs', JSON.parse(alternatif.alternatifs));
+
+        toast('Success', { description: `menggunakan data karyawan ${alternatif.nama_alternatifs}` });
+    };
+
     const saveAlternatifsToDb = (e) => {
         e.preventDefault();
 
         const alternatifsForDb = [...data.alternatifs];
 
-        post(route('data-alternatif', { nameAlternatifsForDb: nameAlternatif, alternatifsForDb: JSON.stringify(alternatifsForDb) }), {
+        post(route('data-alternatif', { nameAlternatifsForDb: 'alternatif_default', alternatifsForDb: JSON.stringify(alternatifsForDb) }), {
             onSuccess: () => {
                 toast('Sucess', { description: 'data karyawan tersimpan.' });
             },
@@ -127,10 +121,24 @@ export default function SawWpProvider({ children }) {
         });
     };
 
+    // Result & Count
+    const addScore = (score) => setData('scores', [...data.scores, score]);
+
+    const setHasilHitungToProvider = (hasilHitung) => {
+        setData(JSON.parse(hasilHitung.data));
+        setCalculation(JSON.parse(hasilHitung.calculation));
+
+        toast('Success', { description: `membuka kembali hasil hitung ${hasilHitung.nama_hasil_hitung}` });
+    };
+
+    const setNameHasilHitungToDb = (nameHasilHitung) => {
+        setNameHasilHitung(nameHasilHitung);
+    };
+
     const saveHasilHitungToDb = (e, calculationFromFe) => {
         e.preventDefault();
 
-        router.post(route('data-perhitungan', { nama_hasil_hitung: nameHasilHitung, data: JSON.stringify(data), calculation: JSON.stringify(calculationFromFe) }), null, {
+        router.post(route('data-hasil-akhir', { nama_hasil_hitung: nameHasilHitung, data: JSON.stringify(data), calculation: JSON.stringify(calculationFromFe) }), null, {
             onSuccess: () => toast('Sucess', { description: 'data perhitungan tersimpan.' }),
             onError: (errors) => {
                 Object.keys(errors).forEach((key) => {
@@ -228,28 +236,12 @@ export default function SawWpProvider({ children }) {
     return (
         <SawWpContext.Provider value={{
             data,
-            addCriteria,
-            deleteCriteria,
-            addAlternatif,
-            deleteAlternatif,
-            addSubCriteria,
-            deleteSubCriteria,
+            addCriteria, updateCriteria, deleteCriteria, setCriteriaToProvider, saveCriteriasToDb,
+            addSubCriteria, updateSubCriteria, deleteSubCriteria, setSubCriteriaToProvider, saveSubCriteriasToDb,
+            addAlternatif, updateAlternatif, deleteAlternatif, setAlternatifToProvider, saveAlternatifsToDb,
             addScore,
-            calculateSAW,
-            calculateWP,
-            calculation,
-            setNameCriteriaToDb,
-            saveCriteriasToDb,
-            setCriteriaToProvider,
-            saveHasilHitungToDb,
-            setNameHasilHitungToDb,
-            setHasilHitungToProvider,
-            saveSubCriteriasToDb,
-            setNameSubCriteriaToDb,
-            setSubCriteriaToProvider,
-            setNameAlternatifToDb,
-            saveAlternatifsToDb,
-            setAlternatifToProvider,
+            calculateSAW, calculateWP, calculation,
+            setNameHasilHitungToDb, setHasilHitungToProvider, saveHasilHitungToDb,
         }}>
             {children}
         </SawWpContext.Provider>

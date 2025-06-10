@@ -1,35 +1,59 @@
 import { SawWpContext } from "@/Components/SawWpProvider.jsx";
 import { Button } from "@/Components/ui/button.js";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card.js";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/Components/ui/dialog.js";
+import { Card } from "@/Components/ui/card.js";
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/Components/ui/dialog.js";
 import { Input } from "@/Components/ui/input.js";
-import { Label } from "@/Components/ui/label.js";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select.js";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/Components/ui/table.js";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import { formatDate } from "@/lib/formatDate.js";
-import { Head, useForm } from "@inertiajs/react";
-import { Box, MousePointer2, Plus, Save, Trash2 } from "lucide-react";
-import { useContext, useState } from "react";
+import { Head } from "@inertiajs/react";
+import { Box, Plus, Save, Trash2 } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
 
 const DataKriteria = ({ auth, criteriasFromDb }) => {
-    const { addCriteria, deleteCriteria, data, saveCriteriasToDb, setNameCriteriaToDb, setCriteriaToProvider } = useContext(SawWpContext);
+    const {
+        addCriteria,
+        updateCriteria,
+        deleteCriteria,
+        data,
+        saveCriteriasToDb,
+        setCriteriaToProvider
+    } = useContext(SawWpContext);
+
     const [type, setType] = useState('');
 
     const handleAddCriteria = (e) => {
         e.preventDefault();
 
-        addCriteria({
+        const newCriteria = {
             id: Date.now(),
             code: e.target.code.value,
             name: e.target.name.value,
             type: e.target.type.value,
             weight: parseFloat(e.target.weight.value)
-        });
+        };
 
+        addCriteria(newCriteria);
         e.target.reset();
         setType('');
     };
+
+    const handleUpdateCriteria = (id, field, value) => {
+        updateCriteria(id, field, value);
+    };
+
+    const handleDeleteCriteria = (id) => {
+        deleteCriteria(id);
+    };
+
+    useEffect(() => {
+        if (criteriasFromDb?.length > 0) {
+            const defaultCriteria = criteriasFromDb.find(c => c.nama_kriteria === 'criteria_default');
+            if (defaultCriteria) {
+                setCriteriaToProvider(defaultCriteria);
+            }
+        }
+    }, [criteriasFromDb]);
 
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -40,35 +64,10 @@ const DataKriteria = ({ auth, criteriasFromDb }) => {
                     Data Kriteria
                 </h1>
                 <div className={'flex gap-5'}>
-                    <Dialog>
-                        <DialogTrigger asChild>
-                            <Button variant={"outline"}>
-                                <Save />
-                                Simpan Kriteria Saat Ini
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>
-                                    Simpan Kriteria
-                                </DialogTitle>
-                                <DialogDescription>
-                                    simpan kriteria untuk bisa digunakan kembali
-                                </DialogDescription>
-                            </DialogHeader>
-                            <form onSubmit={saveCriteriasToDb} className={'space-y-5'}>
-                                <div>
-                                    <Label>
-                                        Nama
-                                    </Label>
-                                    <Input onChange={(e) => setNameCriteriaToDb(e.target.value)} />
-                                </div>
-                                <Button type={'submit'}>
-                                    Simpan
-                                </Button>
-                            </form>
-                        </DialogContent>
-                    </Dialog>
+                    <Button variant={"outline"} onClick={saveCriteriasToDb}>
+                        <Save />
+                        Simpan Perubahan
+                    </Button>
                     <Dialog>
                         <DialogTrigger asChild>
                             <Button>
@@ -77,106 +76,94 @@ const DataKriteria = ({ auth, criteriasFromDb }) => {
                             </Button>
                         </DialogTrigger>
                         <DialogContent>
-                            <DialogTitle>
-                                Data Kriteria
-                            </DialogTitle>
+                            <DialogTitle>Data Kriteria</DialogTitle>
                             <DialogDescription>
                                 tambah data kriteria
                             </DialogDescription>
-                            <div>
-                                <form onSubmit={handleAddCriteria} className={'space-y-5'}>
-                                    <Input type={'text'} name={'code'} placeholder={'Kode Kriteria'} required />
-                                    <Input type={'text'} name={'name'} placeholder={'Nama Kriteria'} required />
-                                    <Select value={type} onValueChange={(value) => setType(value)} name={'type'}>
+                            <form onSubmit={handleAddCriteria} className={'space-y-5'}>
+                                <Input type={'text'} name={'code'} placeholder={'Kode Kriteria'} required />
+                                <Input type={'text'} name={'name'} placeholder={'Nama Kriteria'} required />
+                                <Select value={type} onValueChange={setType} name={'type'} required>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Tipe Kriteria" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="benefit">Benefit</SelectItem>
+                                        <SelectItem value="cost">Cost</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <Input type="number" placeholder={'bobot'} step="0.01" name="weight" required />
+                                <Button type="submit">
+                                    <Plus />
+                                    Tambah Kriteria
+                                </Button>
+                            </form>
+                        </DialogContent>
+                    </Dialog>
+                </div>
+            </div>
+            <Card>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Kode</TableHead>
+                            <TableHead>Nama Kriteria</TableHead>
+                            <TableHead>Tipe</TableHead>
+                            <TableHead>Bobot</TableHead>
+                            <TableHead>Aksi</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {data.criterias.map((criteria) => (
+                            <TableRow key={criteria.id}>
+                                <TableCell>
+                                    <Input
+                                        value={criteria.code}
+                                        onChange={(e) => handleUpdateCriteria(criteria.id, 'code', e.target.value)}
+                                    />
+                                </TableCell>
+                                <TableCell>
+                                    <Input
+                                        value={criteria.name}
+                                        onChange={(e) => handleUpdateCriteria(criteria.id, 'name', e.target.value)}
+                                    />
+                                </TableCell>
+                                <TableCell>
+                                    <Select
+                                        value={criteria.type}
+                                        onValueChange={(value) => handleUpdateCriteria(criteria.id, 'type', value)}
+                                    >
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Tipe Kriteria" />
+                                            <SelectValue />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="benefit">Benefit</SelectItem>
                                             <SelectItem value="cost">Cost</SelectItem>
                                         </SelectContent>
                                     </Select>
-                                    <Input type="number" placeholder={'bobot'} step="0.01" name="weight" required />
-                                    <Button type="submit">
-                                        <Plus />
-                                        Tambah Kriteria
+                                </TableCell>
+                                <TableCell>
+                                    <Input
+                                        type="number"
+                                        step="0.01"
+                                        value={criteria.weight}
+                                        onChange={(e) => handleUpdateCriteria(criteria.id, 'weight', parseFloat(e.target.value))}
+                                    />
+                                </TableCell>
+                                <TableCell>
+                                    <Button
+                                        variant="destructive"
+                                        size="icon"
+                                        onClick={() => handleDeleteCriteria(criteria.id)}
+                                    >
+                                        <Trash2 className="h-4 w-4" />
                                     </Button>
-                                </form>
-                            </div>
-                        </DialogContent>
-                    </Dialog>
-                </div>
-            </div>
-            <div className={'grid md:grid-cols-4 gap-5'}>
-                {criteriasFromDb.map((criteria, index) => (
-                    <Card key={criteria.id}>
-                        <CardHeader>
-                            <div className={'flex justify-between'}>
-                                <div>
-                                    <CardTitle>
-                                        {criteria.nama_kriteria}
-                                    </CardTitle>
-                                    <CardDescription>
-                                        tanggal buat {formatDate(criteria.created_at)}
-                                    </CardDescription>
-                                </div>
-                                <Button onClick={() => setCriteriaToProvider(criteria)}>
-                                    <MousePointer2 />
-                                    Pakai
-                                </Button>
-                            </div>
-                        </CardHeader>
-                    </Card>
-                ))}
-            </div>
-            <div className={'mt-5'}>
-                <Card>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>
-                                    kode Kriteria
-                                </TableHead>
-                                <TableHead>
-                                    Nama Kriteria
-                                </TableHead>
-                                <TableHead>
-                                    Tipe
-                                </TableHead>
-                                <TableHead>
-                                    Bobot
-                                </TableHead>
-                                <TableHead>
-                                    Aksi
-                                </TableHead>
+                                </TableCell>
                             </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {Array.isArray(data.criterias) && data.criterias.map((criteria) => (
-                                <TableRow key={criteria.id}>
-                                    <TableCell>
-                                        {criteria.code}
-                                    </TableCell>
-                                    <TableCell>
-                                        {criteria.name}
-                                    </TableCell>
-                                    <TableCell>
-                                        {criteria.type}
-                                    </TableCell>
-                                    <TableCell>
-                                        {criteria.weight}
-                                    </TableCell>
-                                    <TableCell>
-                                        <Button onClick={() => deleteCriteria(criteria.id)} size={"icon"} variant={'outline'}>
-                                            <Trash2 />
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </Card>
-            </div>
+                        ))}
+                    </TableBody>
+                </Table>
+            </Card>
         </AuthenticatedLayout>
     );
 };
