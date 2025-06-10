@@ -1,4 +1,5 @@
 import { SawWpContext } from "@/Components/SawWpProvider.jsx";
+import { Badge } from "@/Components/ui/badge.js";
 import { Button } from "@/Components/ui/button.js";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/Components/ui/card.js";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/Components/ui/dialog.js";
@@ -117,8 +118,8 @@ const DataPerhitungan = ({ auth, hasilHitungFromDb }) => {
                                 <TableBody>
                                     {data.normalized.map(score => (
                                         <TableRow key={score.id}>
-                                            <TableCell>{data.alternatifs.find(a => a.id === score.alternatif_id).name}</TableCell>
-                                            <TableCell>{data.criterias.find(c => c.id === score.criteria_id).name}</TableCell>
+                                            <TableCell>{data.alternatifs.find(a => a.id === score.alternatif_id)?.name ?? <Badge>Data berubah, silahkan hitung ulang</Badge>}</TableCell>
+                                            <TableCell>{data.criterias.find(c => c.id === score.criteria_id)?.name ?? <Badge>Data berubah, silahkan hitung ulang</Badge>}</TableCell>
                                             <TableCell>{score.value}</TableCell>
                                             <TableCell>{score.normalized}</TableCell>
                                         </TableRow>
@@ -149,8 +150,8 @@ const DataPerhitungan = ({ auth, hasilHitungFromDb }) => {
                                 <TableBody>
                                     {data.weighted.map(score => (
                                         <TableRow key={score.id}>
-                                            <TableCell>{data.alternatifs.find(a => a.id === score.alternatif_id).name}</TableCell>
-                                            <TableCell>{data.criterias.find(c => c.id === score.criteria_id).name}</TableCell>
+                                            <TableCell>{data.alternatifs.find(a => a.id === score.alternatif_id)?.name ?? <Badge>Data berubah, silahkan hitung ulang</Badge>}</TableCell>
+                                            <TableCell>{data.criterias.find(c => c.id === score.criteria_id)?.name ?? <Badge>Data berubah, silahkan hitung ulang</Badge>}</TableCell>
                                             <TableCell>{score.value}</TableCell>
                                             <TableCell>{score.normalized}</TableCell>
                                             <TableCell>{score.weighted}</TableCell>
@@ -181,7 +182,7 @@ const DataPerhitungan = ({ auth, hasilHitungFromDb }) => {
                                         .sort((a, b) => b.score - a.score)
                                         .map(result => (
                                             <TableRow key={result.alternatif_id}>
-                                                <TableCell>{data.alternatifs.find(a => a.id === result.alternatif_id).name}</TableCell>
+                                                <TableCell>{data.alternatifs.find(a => a.id === result.alternatif_id)?.name ?? <Badge>Data berubah, silahkan hitung ulang</Badge>}</TableCell>
                                                 <TableCell>{result.score}</TableCell>
                                             </TableRow>
                                         ))}

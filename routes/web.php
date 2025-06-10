@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Alternatifs;
 use App\Models\Criterias;
 use App\Models\ResultCount;
+use App\Models\SubCriterias;
 use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -39,11 +41,43 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('data-kriteria');
 
     Route::get('/data-sub-kriteria', function () {
-        return Inertia::render('DataSubKriteria');
+        $subCriterias = SubCriterias::query()->get();
+
+        return Inertia::render('DataSubKriteria', [
+            'subCriteriasFromDb' => $subCriterias,
+        ]);
+    })->name('data-sub-kriteria');
+
+    Route::post('/data-sub-kriteria', function (Request $request) {
+        $request->validate([
+            'nameSubCriteriasForDb' => 'string',
+            'subCriteriasForDb' => 'json',
+        ]);
+
+        SubCriterias::query()->create([
+            'nama_sub_kriteria' => $request['nameSubCriteriasForDb'],
+            'sub_criterias' => $request['subCriteriasForDb'],
+        ]);
     })->name('data-sub-kriteria');
 
     Route::get('/data-alternatif', function () {
-        return Inertia::render('DataAlternatif');
+        $alternatifs = Alternatifs::query()->get();
+
+        return Inertia::render('DataAlternatif', [
+            'alternatifsFromDb' => $alternatifs,
+        ]);
+    })->name('data-alternatif');
+
+    Route::post('/data-alternatif', function (Request $request) {
+        $request->validate([
+            'nameAlternatifsForDb' => 'string',
+            'alternatifsForDb' => 'json',
+        ]);
+
+        Alternatifs::query()->create([
+            'nama_alternatifs' => $request['nameAlternatifsForDb'],
+            'alternatifs' => $request['alternatifsForDb'],
+        ]);
     })->name('data-alternatif');
 
     Route::get('/data-penilaian', function () {
